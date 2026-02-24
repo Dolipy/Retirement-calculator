@@ -4,42 +4,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Retirement app!</title>
+    <meta name="description"
+        content="Calculate your retirement age and plan your future with our modern retirement calculator.">
+    <title>Retirement Age Calculator | Plan Your Future</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="ReTiReMeNt😪😴.css">
 </head>
 
 <body>
-    <div class="retire">
+    <div class="background-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
 
-
-        <button id="undo">🔁Reload!
+    <main class="container">
+        <header class="top-nav">
+            <button id="undo" title="Reset Calculator">
+                <span class="icon">🔄</span> Reset
             </button>
-        <button id="exit">💨Exit!</button>
-        <p class="hola">Hello lets caculate our retirement age together!!!</p>
-    </div>
-    <div class="guess"> Retirement age!
-    </div>
+            <button id="exit" title="Exit App">
+                <span class="icon">�</span> Exit
+            </button>
+        </header>
 
-    <div class="checkers">
-        <p>👧👦🔡Please input your full name:</p>
-        <input type="text" name="display" class="border">
-        <p>👶🔢Please Input your birth year:</p>
-        <input type="number" name="display" class="borderframed">
-        <p>👵👴Please input your retiement age:</p>
-        <input type="number" name="display" class="borderframedtwo">
-        <button id="enter">✅Check!</button>
+        <section class="hero">
+            <h1 class="title">Retirement <span class="accent">Planner</span></h1>
+            <p class="subtitle" id="status-text">Plan your golden years with precision.</p>
+        </section>
 
+        <div class="calculator-grid">
+            <section class="input-card card">
+                <div class="input-group">
+                    <label for="name-input">👤 Your Full Name</label>
+                    <input type="text" id="name-input" placeholder="e.g. John Doe" class="modern-input">
+                </div>
 
-    </div>
-    <div class="info">
-        <p class="name">👧🔤Fullname:0</p>
-        <p class="retirement">👧👩Age:0</p>
-        <p class="years">👩🔜👵🛌Retirement year:0</p>
-        <p class="birth">👶Birthyear:0</p>
-    </div>
+                <div class="input-group">
+                    <label for="birth-input">📅 Birth Year</label>
+                    <input type="number" id="birth-input" placeholder="e.g. 1990" class="modern-input">
+                </div>
 
-    <script src="ReTiReMeNt😪😴.js "></script>
+                <div class="input-group">
+                    <label for="retire-input">👴 Desired Retirement Age</label>
+                    <input type="number" id="retire-input" placeholder="e.g. 65" class="modern-input">
+                </div>
+
+                <button id="enter" class="primary-btn">Calculate My Future</button>
+            </section>
+
+            <section class="results-card card hidden" id="results">
+                <div class="result-header">
+                    <h3>Analysis Complete</h3>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <span class="stat-label">Full Name</span>
+                        <span class="stat-value" id="res-name">-</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Current Age</span>
+                        <span class="stat-value" id="res-age">-</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Retirement Year</span>
+                        <span class="stat-value" id="res-year">-</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Years to Go</span>
+                        <span class="stat-value" id="res-countdown">-</span>
+                    </div>
+                </div>
+                <div class="summary-box">
+                    <p id="summary-text"></p>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="ReTiReMeNt😪😴.js"></script>
 </body>
-
 
 </html>

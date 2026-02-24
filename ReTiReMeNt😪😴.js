@@ -1,77 +1,118 @@
-'use strict'
-document.querySelector('#enter').addEventListener('click', function() {
-    const guess = String(document.querySelector('.borderframe').value);
-    const guessed = Number(document.querySelector('.borderframed').value);
-    const guessing = Number(document.querySelector('.borderframed2').value);
-    if (!guess || !guessed || !guessing) {
-        document.querySelector('.guess').textContent = '🥺Please fill up the boxes!';
+'use strict';
 
-    } else if (guess && guessed && guessing) {
-        function joshage(currentyear, birthyears) {
-            return currentyear - birthyears
+// Elements
+const btnCalculate = document.querySelector('#enter');
+const btnReset = document.querySelector('#undo');
+const btnExit = document.querySelector('#exit');
 
-        }
-        console.log(joshage(2025, 1998));
+const inputName = document.querySelector('#name-input');
+const inputBirth = document.querySelector('#birth-input');
+const inputRetireAge = document.querySelector('#retire-input');
 
-        document.querySelector('.guess').style.color = ' #006efe';
-        document.querySelector('.hola').style.color = ' #00fe22';
+const resultsCard = document.querySelector('#results');
+const statusText = document.querySelector('#status-text');
 
-        function joshretirement(retirement, currentyear, birthYear) {
-            return retirement - joshage(currentyear, birthYear)
+const resName = document.querySelector('#res-name');
+const resAge = document.querySelector('#res-age');
+const resYear = document.querySelector('#res-year');
+const resCountdown = document.querySelector('#res-countdown');
+const summaryText = document.querySelector('#summary-text');
 
-        }
-        console.log(joshretirement(95, 2025, 1998));
+/**
+ * Calculate current age and retirement details
+ */
+const updateUI = () => {
+    const name = inputName.value.trim();
+    const birthYear = Number(inputBirth.value);
+    const targetRetireAge = Number(inputRetireAge.value);
+    const currentYear = new Date().getFullYear();
 
-
-        function joshpuppy(currentyear, birthYear, firstName, retirement) {
-            let retires = joshretirement(retirement, currentyear, birthYear);
-            const age5 = joshage(currentyear, birthYear);
-            if (retires > 0) {
-                console.log(`YAY!, ${firstName} has not retired!`);
-                document.querySelector('.hola').textContent = `YAY!,${firstName} not has retired!`;
-
-            } else {
-                console.log(`Oh, ${firstName} has retired!`);
-                document.querySelector('.hola').textContent = `Oh, ${firstName} has retired.`;
-            }
-            if (retires < 1) {
-                retires = 0;
-            }
-            document.querySelector('.name').textContent = `${firstName}`;
-            document.querySelector('.retirement').textContent = `👧👩Age: ${age5}`;
-            document.querySelector('.years').textContent = `👩🔜👵🛌Retirement year:${retires}`;
-            document.querySelector('.birth').textContent = `👶Birthyear: ${birthYear}`;
-            document.querySelector('.guess').textContent = `
-                    ${ firstName }
-                    birthyear is ${ birthYear }, current age is ${ age5 }
-                    and the year remaining to retire is ${ retires }
-                    `;
-            return `
-                    ${ firstName }
-                    birthyear is ${ birthYear }, current age is ${ age5 }
-                    and the year remaining to retire is ${ retires }
-                    `
-        }
-
-
-        console.log(joshpuppy(2025, guessed, guess, guessing));
-
-
-
+    // Validation
+    if (!name || !birthYear || !targetRetireAge) {
+        statusText.textContent = '⚠️ Please fill in all fields to calculate.';
+        statusText.style.color = '#f43f5e';
+        resultsCard.classList.add('hidden');
+        return;
     }
 
-    document.querySelector('body').style.backgroundImage = 'Linear-gradient(to top, #00e5ff, #aa00ff, #f85ad3)';
+    if (birthYear > currentYear || birthYear < 1900) {
+        statusText.textContent = '❌ Valid birth year required (1900 - present).';
+        statusText.style.color = '#f43f5e';
+        return;
+    }
 
-});
-document.querySelector('#undo').addEventListener('click', function() {
-    document.querySelector('.borderframe').value = '';
-    document.querySelector('.borderframed').value = '';
-    document.querySelector('.borderframed2').value = '';
-    document.querySelector('.name').textContent = '👧🔤Fullname:0';
-    document.querySelector('.retirement').textContent = '👧👩Age:0';
-    document.querySelector('.years').textContent = '👩🔜👵🛌Retirement year:0';
-    document.querySelector('.birth').textContent = '👶Birthyear:0';
-    document.querySelector('.guess').textContent = 'Retirement age!';
-    document.querySelector('.hola').textContent = 'Hello lets calculate our retirement age together!!!';
-    document.querySelector('body').style.backgroundImage = ' linear-gradient(to bottom, #ff3835, #ffae00, #fbff00, #18fb04, #3ff2ff, #4502fc, #9f21ff, #ff00e6)';
+    const age = currentYear - birthYear;
+    const yearsRemaining = targetRetireAge - age;
+    const retirementYear = currentYear + yearsRemaining;
+
+    // Update Results
+    resName.textContent = name;
+    resAge.textContent = `${age} years`;
+    resYear.textContent = retirementYear;
+    resCountdown.textContent = yearsRemaining > 0 ? `${yearsRemaining} years` : 'Retired';
+
+    // Update Summary Message
+    if (yearsRemaining > 0) {
+        summaryText.innerHTML = `Hey <strong>${name}</strong>, you have <strong>${yearsRemaining}</strong> years left until you reach your goal age of <strong>${targetRetireAge}</strong>. Your retirement year will be <strong>${retirementYear}</strong>! 🚀`;
+        statusText.textContent = 'Success! Your plan is ready.';
+        statusText.style.color = '#10b981';
+    } else {
+        summaryText.innerHTML = `Congratulations <strong>${name}</strong>! You've already reached or surpassed your retirement age of <strong>${targetRetireAge}</strong>. Enjoy your well-deserved freedom! 🌴`;
+        statusText.textContent = 'You are a legend!';
+        statusText.style.color = '#10b981';
+    }
+
+    // Show Results Card
+    resultsCard.classList.remove('hidden');
+
+    // Smooth scroll to results on mobile
+    if (window.innerWidth < 768) {
+        resultsCard.scrollIntoView({ behavior: 'smooth' });
+    }
+};
+
+/**
+ * Reset all fields
+ */
+const resetApp = () => {
+    inputName.value = '';
+    inputBirth.value = '';
+    inputRetireAge.value = '';
+    resultsCard.classList.add('hidden');
+    statusText.textContent = 'Plan your golden years with precision.';
+    statusText.style.color = '';
+
+    // Add a little feedback
+    const originalText = btnReset.innerHTML;
+    btnReset.innerHTML = '✨ Cleared!';
+    setTimeout(() => btnReset.innerHTML = originalText, 1000);
+};
+
+/**
+ * Exit App functionality
+ */
+const exitApp = () => {
+    if (confirm('Are you sure you want to exit the Retirement Planner?')) {
+        document.body.innerHTML = `
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; text-align: center; font-family: 'Outfit', sans-serif; background: #0f172a; color: white;">
+                <h1 style="font-size: 3rem; margin-bottom: 1rem;">Goodbye! 👋</h1>
+                <p style="color: #94a3b8; font-size: 1.2rem;">We hope your retirement dreams come true. See you soon!</p>
+                <button onclick="location.reload()" style="margin-top: 2rem; background: #6366f1; border: none; padding: 1rem 2rem; border-radius: 1rem; color: white; cursor: pointer; font-weight: 700;">Back to App</button>
+            </div>
+        `;
+    }
+};
+
+// Event Listeners
+btnCalculate.addEventListener('click', updateUI);
+
+btnReset.addEventListener('click', resetApp);
+
+btnExit.addEventListener('click', exitApp);
+
+// Enter key support
+[inputName, inputBirth, inputRetireAge].forEach(input => {
+    input.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') updateUI();
+    });
 });
