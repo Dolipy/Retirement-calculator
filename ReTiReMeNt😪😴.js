@@ -7,7 +7,7 @@ const btnExit = document.querySelector('#exit');
 
 const inputName = document.querySelector('#name-input');
 const inputBirth = document.querySelector('#birth-input');
-const inputRetireAge = document.querySelector('#retire-input');
+const RETIREMENT_AGE = 65;
 
 const resultsCard = document.querySelector('#results');
 const statusText = document.querySelector('#status-text');
@@ -24,11 +24,11 @@ const summaryText = document.querySelector('#summary-text');
 const updateUI = () => {
     const name = inputName.value.trim();
     const birthYear = Number(inputBirth.value);
-    const targetRetireAge = Number(inputRetireAge.value);
+    const targetRetireAge = RETIREMENT_AGE;
     const currentYear = new Date().getFullYear();
 
     // Validation
-    if (!name || !birthYear || !targetRetireAge) {
+    if (!name || !birthYear) {
         statusText.textContent = '⚠️ Please fill in all fields to calculate.';
         statusText.style.color = '#f43f5e';
         resultsCard.classList.add('hidden');
@@ -77,7 +77,7 @@ const updateUI = () => {
 const resetApp = () => {
     inputName.value = '';
     inputBirth.value = '';
-    inputRetireAge.value = '';
+
     resultsCard.classList.add('hidden');
     statusText.textContent = 'Plan your golden years with precision.';
     statusText.style.color = '';
@@ -111,7 +111,7 @@ btnReset.addEventListener('click', resetApp);
 btnExit.addEventListener('click', exitApp);
 
 // Enter key support
-[inputName, inputBirth, inputRetireAge].forEach(input => {
+[inputName, inputBirth].forEach(input => {
     input.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') updateUI();
     });
